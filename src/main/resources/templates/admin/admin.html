@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/admin-layout :: head(Admin)}"></head>
+<body class="d-flex flex-column min-vh-100">
+<header th:replace="~{layouts/admin-layout :: header}"></header>
+<div class="container mt-4">
+    <h1>Admin dashboard</h1>
+
+    <div th:if="${successMessage}" id = "successMessage" class="alert alert-success alert-dismissible fade show">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <a href="/admin/post/new" class="btn btn-success mb-3">New post</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr >
+            <td>1</td>
+            <td><a href="/post/1">Мой первый пост</a></td>
+            <td>10.05.2024</td>
+            <td>
+                <a href="/admin/post/edit/1" class="btn btn-sm btn-warning">Edit</a>
+                <a href="/admin/post/delete/1" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><a href="/post/2">Как настроить Spring Boot</a></td>
+            <td>05.05.2024</td>
+            <td>
+                <a href="/admin/post/edit/2" class="btn btn-sm btn-warning">Edit</a>
+                <a href="/admin/post/delete/2" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.id}">ID</td>
+            <td><a href="/admin" th:href="@{/admin/post/${post.id}}" th:text="${post.title}">Title</a></td>
+            <td th:text="${post.createdAt}">Date</td>
+            <td>
+                <a href="/admin" th:href="@{/admin/post/edit/${post.id}}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="/admin" th:href="@{/admin/post/delete/${post.id}}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace = "~{layouts/admin-layout :: footer}"></footer>
+
+</body>
+</html>
