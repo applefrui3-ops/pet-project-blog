@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layouts/admin-layout :: head(Admin)}"></head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100" data-page = "admin">
 <header th:replace="~{layouts/admin-layout :: header}"></header>
 <div class="container mt-4">
     <h1>Admin dashboard</h1>
@@ -11,7 +11,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <a href="/admin/post/new" class="btn btn-success mb-3">New post</a>
+    <div class="mt-4">
+        <a href="/admin/post/new" class="btn btn-success mb-3">New post</a>
+        <a href="/admin/tag/new" class="btn btn-success mb-3">New tag</a>
+    </div>
+
 
     <table class="table">
         <thead>

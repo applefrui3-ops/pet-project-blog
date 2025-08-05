@@ -20,6 +20,12 @@ public class Tag {
     private Set<Post> posts = new HashSet<>();
 
 
+    public Tag() {}
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
 
     public void addPost(Post post) {
         posts.add(post);
