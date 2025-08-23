@@ -47,11 +47,11 @@
         </tr>
         <tr th:each="post : ${posts}">
             <td th:text="${post.id}">ID</td>
-            <td><a href="/admin" th:href="@{/admin/post/${post.id}}" th:text="${post.title}">Title</a></td>
-            <td th:text="${post.createdAt}">Date</td>
+            <td><a href="/admin" th:href="@{/admin/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></td>
+            <td th:text="${post.createdAt.toLocalDate()}">Date</td>
             <td>
-                <a href="/admin" th:href="@{/admin/post/edit/${post.id}}" class="btn btn-sm btn-warning">Edit</a>
-                <a href="/admin" th:href="@{/admin/post/delete/${post.id}}" class="btn btn-sm btn-danger">Delete</a>
+                <a href="/admin" th:href="@{/admin/post/edit/{id}(id=${post.id})}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="/admin" th:href="@{/admin/post/delete/{id}(id=${post.id})}" class="btn btn-sm btn-danger">Delete</a>
             </td>
         </tr>
         </tbody>

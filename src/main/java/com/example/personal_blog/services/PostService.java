@@ -4,7 +4,10 @@ import com.example.personal_blog.models.Post;
 import com.example.personal_blog.repositories.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PostService {
@@ -14,12 +17,12 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post getPostById(Long id) {
-        return postRepository.findById(id).orElse(null);
+    public Post getPostByIdWithTags(Long id) {
+        return postRepository.findPostByIdWithTags(id);
     }
 
-    public List<Post> findAll() {
-        return postRepository.findAll();
+    public Set<Post> findAllWithTags() {
+        return postRepository.findAllWithTags();
     }
 
     public Post save(Post post) {
@@ -30,5 +33,11 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    public void deletePostById(Long id){
+        postRepository.deleteById(id);
+    }
 
+    public LocalDateTime getCreatedAt(Long id) {
+        return postRepository.getCreatedAt(id);
+    }
 }

@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', function (e){
         case 'create-post':
             import('../pages/create-post.js');
             break;
+        case 'update-post':
+            import('../pages/update-post');
+            break;
         case 'create-tag':
             import('../pages/create-tag.js');
             break;
+
     }
 });

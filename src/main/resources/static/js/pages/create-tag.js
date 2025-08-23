@@ -58,7 +58,6 @@ function loadExistingTags() {
                             </button>
                         `;
                 let appendedChild = tagsContainer.appendChild(tagElement);
-                console.log(appendedChild);
                 appendedChild.addEventListener('click', function (e){
                     e.preventDefault();
                     showDeleteModal(tag.id, tag.name);
@@ -66,7 +65,6 @@ function loadExistingTags() {
             });
         })
         .catch(error => {
-            console.error('Ошибка загрузки тегов:', error);
             document.getElementById('existingTags').innerHTML =
                 '<div class="alert alert-danger">Ошибка загрузки тегов</div>';
         });
@@ -93,7 +91,6 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
                 bootstrap.Modal.getInstance(document.getElementById('deleteTagModal')).hide();
             })
             .catch(error => {
-                console.error('Ошибка удаления тега:', error);
                 alert('Ошибка при удалении тега');
             });
     }
@@ -131,7 +128,6 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
                 loadExistingTags();
             })
             .catch(error => {
-                console.error('Ошибка добавления тегов:', error);
                 alert('Ошибка при добавлении тегов');
             });
     });

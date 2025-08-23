@@ -1,6 +1,7 @@
 package com.example.personal_blog.controllers;
 
 
+import com.example.personal_blog.dto.TagDto;
 import com.example.personal_blog.models.Tag;
 import com.example.personal_blog.services.TagService;
 import org.springframework.http.ResponseEntity;
@@ -12,24 +13,20 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/tags")
-public class TagController {
+public class TagRestController {
     private TagService tagService;
 
-    public TagController(TagService tagService) {
+    public TagRestController(TagService tagService) {
         this.tagService = tagService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Tag>> getAllTags() {
-        return ResponseEntity.ok(tagService.getAllTags());
+    public ResponseEntity<List<TagDto>> getAllTags() {
+        return ResponseEntity.ok(tagService.getAllTagsDto());
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addTags(@RequestBody Map<String, List<String>> request) {
-        System.out.println("\n\n\n ---START---");
-        System.out.println(request);
-        System.out.println(request.get("tags"));
-        System.out.println("---END---\n\n\n ");
         List<String> tagNames = request.get("tags");
         Set<Tag> savedTags = tagService.saveTags(tagNames);
         return ResponseEntity.ok(savedTags);

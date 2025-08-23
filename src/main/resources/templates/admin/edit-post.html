@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit post</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/admin-layout :: head(Create-post)}"></head>
+<body class="d-flex flex-column min-vh-100" data-page = "create-post">
+<header th:replace="~{layouts/admin-layout :: header}"></header>
 
+<main class="my-3">
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit Post</h1>
+
+        <form th:action="@{/admin/post/edit/{id}(id=${postDto.id})}" th:object="${postDto}" method="post">
+
+            <div class="mb-3">
+                <label for="title" class="form-label">Title*</label>
+                <input type="text" class="form-control" id="title"
+                       th:field="*{title}" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content*</label>
+                <textarea class="form-control" id="content" rows="10"
+                          th:field="*{content}" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="summary" class="form-label">Summary</label>
+                <textarea class="form-control" id="summary" rows="3"
+                          th:field="*{summary}"></textarea>
+                <div class="form-text">Brief description for preview</div>
+            </div>
+
+            <div class="mb-3" th:if = "${not #sets.isEmpty(tags)}">
+                <label class="form-label">Tags</label>
+                <div class="d-flex flex-wrap gap-2" id="tags-container">
+                    <div th:each="tag : ${tags}"
+                         th:with="hasTag = ${postDto.tags.contains(tag)}"
+                         class="form-check">
+                        <input type="checkbox"
+                               th:id="'tag-' + ${tag.id}"
+                               th:value="${tag.id}"
+                               th:checked="${hasTag}"
+                               class="form-check-input d-none"
+                               name="tags">
+                        <label th:for="'tag-' + ${tag.id}"
+                               th:text="${tag.name}"
+                               th:classappend="${hasTag} ? 'btn-primary' : 'btn-outline-primary'"
+
+                               class="btn tag-label">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div th:if="${#fields.hasErrors('*') or not #lists.isEmpty(errors)}" class="alert alert-danger">
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                </ul>
+                <ul th:if = "${not #lists.isEmpty(errors)}">
+                    <li th:each="error : ${errors}" th:text="${error.getDefaultMessage()}">error</li>
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex justify-content-between my-4">
+                    <a th:href="@{/admin}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Publish</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</main>
+
+<footer th:replace="~{layouts/admin-layout :: footer}"></footer>
 </body>
 </html>

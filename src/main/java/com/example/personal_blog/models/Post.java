@@ -34,6 +34,8 @@ public class Post {
     private Set<Tag> tags =  new HashSet<>();
 
 
+    public Post() {}
+
     public void addTag(Tag tag) {
         tags.add(tag);
         tag.getPosts().add(this);
@@ -90,5 +92,33 @@ public class Post {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(content, post.content) &&
+                Objects.equals(summary, post.summary) &&
+                Objects.equals(createdAt, post.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, summary, createdAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", summary='" + summary + '\'' +
+                ", createdAt=" + createdAt +
+                ", tags=" + tags +
+                '}';
     }
 }

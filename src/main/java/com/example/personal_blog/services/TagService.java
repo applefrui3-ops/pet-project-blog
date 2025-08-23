@@ -1,5 +1,7 @@
 package com.example.personal_blog.services;
 
+import com.example.personal_blog.dto.TagDto;
+import com.example.personal_blog.dto.mappers.TagMapper;
 import com.example.personal_blog.models.Tag;
 import com.example.personal_blog.repositories.TagRepository;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,20 @@ public class TagService {
         return tagRepository.findById(id).orElse(null);
     }
 
-    public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+    public Set<Tag> getAllTags() {
+        return new HashSet<>(tagRepository.findAll());
+    }
+
+    public List<TagDto>  getAllTagsDto() {
+        List<TagDto> tagsDto = new ArrayList<>();
+        for (Tag tag : tagRepository.findAll()) {
+            tagsDto.add(new TagMapper().toDto(tag));
+        }
+        return tagsDto;
+    }
+
+    public Set<Tag> getTagsById(Set<Long> ids) {
+        return tagRepository.findTagsByIdIn(ids);
     }
 
     public Tag saveTag(Tag tag) {
