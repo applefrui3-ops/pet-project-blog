@@ -22,6 +22,16 @@ public class PostMapper{
         return  dto;
     }
 
+    public Post toEntity(PostDto dto){
+        Post post = new Post();
+        post.setId(dto.getId());
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        post.setSummary(dto.getSummary());
+        post.setTags(dto.getTags());
+        return post;
+    }
+
     public Post toEntity(PostDto dto, LocalDateTime createdAt){
         Post post = new Post();
         post.setId(dto.getId());

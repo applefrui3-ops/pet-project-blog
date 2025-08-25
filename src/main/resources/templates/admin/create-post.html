@@ -8,7 +8,7 @@
     <div class="container mt-4">
         <h1 class="mb-4">Create New Post</h1>
 
-        <form th:action="@{/admin/post/new}" th:object="${post}" method="post">
+        <form th:action="@{/admin/post/new}" th:object="${postDto}" method="post">
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title*</label>

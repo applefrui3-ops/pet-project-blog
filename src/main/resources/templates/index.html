@@ -1,56 +1,36 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/layout :: head('Main Page')}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Main page</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 </head>
-<body>
-<!-- Навбар -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">Мой Блог</a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="/about">Обо мне</a>
-            <a class="nav-link" href="/contact">Контакты</a>
-            <a class="nav-link" href="/admin/login">Вход</a>
-        </div>
-    </div>
-</nav>
+<body class="d-flex flex-column min-vh-100">
 
-<!-- Список постов -->
-<div class="container mt-4">
-    <h1>Последние посты</h1>
+    <header th:replace="~{layouts/layout :: header}">
 
-    <div class="post-preview">
-        <h2><a href="/post/1">Мой первый пост</a></h2>
-        <p class="text-muted">Опубликовано: 10 мая 2024</p>
-        <p>Краткое описание поста. Здесь будет выжимка из содержимого...</p>
-        <a href="/post/1" class="btn btn-outline-primary">Читать далее</a>
+    </header>
+
+
+<div class="container m-5">
+    <h1 class="my-5">Last posts</h1>
+
+    <div class="post-preview my-4" th:each="post : ${posts}">
+        <h2><a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></h2>
+        <p class="text-muted" th:text="${post.createdAt}">Date</p>
+        <p th:text="${post.summary}">Summary...</p>
+        <a th:href="@{/post/{id}(id=${post.id})}" class="btn btn-outline-primary">Detail</a>
     </div>
 
-    <div class="post-preview">
-        <h2><a href="/post/1">Мой второй пост</a></h2>
-        <p class="text-muted">Опубликовано: 10 мая 2024</p>
-        <p>Краткое описание поста. Здесь будет выжимка из содержимого...</p>
-        <a href="/post/1" class="btn btn-outline-primary">Читать далее</a>
-    </div>
-
-    <div class="post-preview">
-        <h2><a href="/post/1">Мой третий пост</a></h2>
-        <p class="text-muted">Опубликовано: 10 мая 2024</p>
-        <p>Краткое описание поста. Здесь будет выжимка из содержимого...</p>
-        <a href="/post/1" class="btn btn-outline-primary">Читать далее</a>
-    </div>
-
-    <div class="post-preview">
-        <h2><a href="/post/2">Как настроить Spring Boot</a></h2>
-        <p class="text-muted">Опубликовано: 5 мая 2024</p>
-        <p>Еще один пост для примера. Краткое содержание...</p>
-        <a href="/post/2" class="btn btn-outline-primary">Читать далее</a>
-    </div>
 </div>
+
+
+<footer th:replace="~{layouts/layout :: footer}">
+
+</footer>
+
 
 <script src="/js/bootstrap.min.js"></script>
 </body>

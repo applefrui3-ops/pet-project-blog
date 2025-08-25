@@ -26,25 +26,6 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
-        <tr >
-            <td>1</td>
-            <td><a href="/post/1">Мой первый пост</a></td>
-            <td>10.05.2024</td>
-            <td>
-                <a href="/admin/post/edit/1" class="btn btn-sm btn-warning">Edit</a>
-                <a href="/admin/post/delete/1" class="btn btn-sm btn-danger">Delete</a>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td><a href="/post/2">Как настроить Spring Boot</a></td>
-            <td>05.05.2024</td>
-            <td>
-                <a href="/admin/post/edit/2" class="btn btn-sm btn-warning">Edit</a>
-                <a href="/admin/post/delete/2" class="btn btn-sm btn-danger">Delete</a>
-            </td>
-        </tr>
         <tr th:each="post : ${posts}">
             <td th:text="${post.id}">ID</td>
             <td><a href="/admin" th:href="@{/admin/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></td>

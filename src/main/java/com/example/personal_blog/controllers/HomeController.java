@@ -1,5 +1,6 @@
 package com.example.personal_blog.controllers;
 
+import com.example.personal_blog.dto.mappers.PostMapper;
 import com.example.personal_blog.services.PostService;
 import com.example.personal_blog.services.TagService;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model){
+        model.addAttribute("posts", postService.findAllWithTags());
         return "index";
     }
 

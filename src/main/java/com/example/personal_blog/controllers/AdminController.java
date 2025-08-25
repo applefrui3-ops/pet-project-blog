@@ -36,29 +36,32 @@ public class AdminController {
 
     @GetMapping("/admin/post/new")
     public String createPost(Model model) {
-        model.addAttribute("post", new Post());
+        model.addAttribute("postDto", new PostDto());
         model.addAttribute("tags", tagService.getAllTags());
         return "admin/create-post";
     }
 
     @PostMapping("/admin/post/new")
-    public String createPost(@Valid @ModelAttribute("post") Post post,
+    public String createPost(@Valid @ModelAttribute("postDto") PostDto postDto,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("post", new Post());
+            model.addAttribute("postDto", postDto);
             model.addAttribute("tags", tagService.getAllTags());
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "admin/create-post";
         }
-        postService.save(post);
-        redirectAttributes.addFlashAttribute("successMessage", "Post successfully created!");
-        return "redirect:/admin";
+            postService.save(new PostMapper().toEntity(postDto));
+            redirectAttributes.addFlashAttribute("successMessage", "Post successfully created!");
+            return "redirect:/admin";
     }
 
     @GetMapping("/admin/post/edit/{id}")
-    public String editPost(Model model, @PathVariable Long id) {
+    public String editPost(Model model,
+                           @PathVariable Long id,
+                           @ModelAttribute("postDto") @Valid PostDto postDto,
+                           BindingResult bindingResult) {
         model.addAttribute("postDto", new PostMapper().toDto(postService.getPostByIdWithTags(id)));
         model.addAttribute("tags", tagService.getAllTags());
         return "admin/edit-post";
