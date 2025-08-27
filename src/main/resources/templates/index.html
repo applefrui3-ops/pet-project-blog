@@ -15,16 +15,54 @@
 
 
 <div class="container m-5">
-    <h1 class="my-5">Last posts</h1>
+    <h1>Last posts:</h1>
 
-    <div class="post-preview my-4" th:each="post : ${posts}">
-        <h2><a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></h2>
-        <p class="text-muted" th:text="${post.createdAt}">Date</p>
-        <p th:text="${post.summary}">Summary...</p>
-        <a th:href="@{/post/{id}(id=${post.id})}" class="btn btn-outline-primary">Detail</a>
+    <div th:if="${posts.size() == 0}" class="alert alert-info">
+        Posts are not found
     </div>
 
+    <div class="post-preview m-5" th:each="post : ${posts}">
+        <h3><a class="link-dark" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></h3>
+        <p class="text-muted" th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy')}">Date</p>
+        <p th:with="lastIndex = 500, summary = ${post.content.length() <= lastIndex} ? ${post.content} : ${post.content.substring(0, lastIndex) + '...'}"
+           th:text="${post.summary.trim().length() == 0} ? ${summary} : ${post.summary}">Summary...</p>
+        <div th:if="${post.tags != null and !post.tags.isEmpty()}" class="mb-4">
+            <div class="d-flex flex-wrap gap-2">
+                        <span th:each="tag : ${post.tags}"
+                              class="badge bg-secondary">
+                            <i class="bi bi-tag me-1"></i>
+                            <span th:text="${tag.name}">Tag</span>
+                        </span>
+            </div>
+        </div>
+        <a th:href="@{/post/{id}(id=${post.id})}" class="btn btn-outline-dark">Detail</a>
+    </div>
+
+    <nav th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link link-dark" th:href="@{/(page = 0, size = ${size})}" >First</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link link-dark" th:href="@{/(page = ${currentPage - 1}, size = ${size})}"> < </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(
+            T(java.lang.Math).max(0,currentPage - 2),
+            T(java.lang.Math).min(totalPages - 1, currentPage + 2)
+            )}" th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link link-dark" th:href="@{/(page = ${i}, size = ${size})}" th:text="${i + 1}">Page</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link link-dark" th:href="@{/(page = ${currentPage + 1}, size = ${size})}"> > </a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link link-dark" th:href="@{/(page = ${totalPages - 1}, size = ${size})}">Last</a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
+<div id="test" th:with="maxNumber=${T(java.lang.Math).min(totalPages - 1, currentPage + 2)}"></div>
 
 
 <footer th:replace="~{layouts/layout :: footer}">

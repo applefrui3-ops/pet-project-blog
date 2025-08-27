@@ -8,6 +8,9 @@ import com.example.personal_blog.services.PostService;
 import com.example.personal_blog.services.TagService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,8 +32,16 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String admin(Model model) {
-        model.addAttribute("posts", postService.findAllWithTags());
+    public String admin(Model model,
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "15") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postService.getPosts(pageable);
+        model.addAttribute("posts", postPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", postPage.getTotalPages());
+        model.addAttribute("totalElements", postPage.getTotalElements());
+        model.addAttribute("size", size);
         return "admin/admin";
     }
 

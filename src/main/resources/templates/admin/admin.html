@@ -20,15 +20,18 @@
     <table class="table">
         <thead>
         <tr>
+            <th>№</th>
             <th>ID</th>
             <th>Title</th>
             <th>Date</th>
             <th>Actions</th>
         </tr>
         </thead>
-        <tr th:each="post : ${posts}">
+        <tbody>
+        <tr th:each="post, status : ${posts}">
+            <td th:text="${status.index + 1}">№</td>
             <td th:text="${post.id}">ID</td>
-            <td><a href="/admin" th:href="@{/admin/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></td>
+            <td><a href="/admin" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></td>
             <td th:text="${post.createdAt.toLocalDate()}">Date</td>
             <td>
                 <a href="/admin" th:href="@{/admin/post/edit/{id}(id=${post.id})}" class="btn btn-sm btn-warning">Edit</a>
@@ -37,6 +40,30 @@
         </tr>
         </tbody>
     </table>
+
+    <nav th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = 0, size = ${size})}">First</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = ${currentPage - 1}, size = ${size})}"> < </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(
+            T(java.lang.Math).max(0, currentPage - 2),
+            T(java.lang.Math).min(totalPages - 1, currentPage + 2)
+            )}" th:classappend="${currentPage == i} ? 'active'">
+                <a class="page-link" th:href="@{/admin(page = ${i}, size = ${size})}" th:text="${i + 1}">Page</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = ${currentPage + 1}, size = ${size})}"> > </a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = ${currentPage + 1}, size = ${size})}">Last</a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
 
 <footer th:replace = "~{layouts/admin-layout :: footer}"></footer>

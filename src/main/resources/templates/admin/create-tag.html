@@ -1,61 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace = "~{layouts/admin-layout :: head(Create-tag)}"></head>
+<head th:replace = "~{layouts/admin-layout :: head(Create-tags)}"></head>
 <body class="d-flex flex-column min-vh-100" data-page = "create-tag">
 <header th:replace="~{layouts/admin-layout :: header}"></header>
 
 <div class="container py-5">
     <div class="tag-form-container">
 
-        <h2 class="mb-4">Добавление тегов</h2>
+        <h2 class="mb-4">Create tags</h2>
 
         <form id="tagsForm" method="post" action="/api/tags/add">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
             <div id="tagsContainer">
                 <div class="input-group mb-3 tag-input-group">
-                    <input type="text" class="form-control" name="tags[]" placeholder="Введите название тега" required>
+                    <input type="text" class="form-control" name="tags[]" placeholder="Enter tag name" required>
                     <button id="remove-tag-btn" class="btn btn-outline-danger" type="button">×</button>
                 </div>
             </div>
 
             <div class="d-flex justify-content-between mt-3">
                 <button type="button" id="add-tag-btn" class="btn btn-secondary">
-                    <i class="bi bi-plus"></i> Добавить ещё тег
+                    <i class="bi bi-plus"></i> Add new tag
                 </button>
 
                 <button type="submit" class="btn btn-primary">
-                    Сохранить все теги
+                    Save all tags
                 </button>
             </div>
         </form>
 
+
         <div class="mt-5">
-            <h4>Существующие теги</h4>
+            <div class="card border-primary p-2">
+            <h4>Existing tags</h4>
             <div id="existingTags" class="d-flex flex-wrap mt-3">
                 <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Загрузка...</span>
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+            </div>
         </div>
+
+
+        <div class="mb-4">
+            <div class="d-flex justify-content-between my-4">
+                <a th:href="@{/admin}" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
+
 
 
     </div>
 </div>
 
-<!-- Модальное окно подтверждения удаления -->
+
 <div class="modal fade" id="deleteTagModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Подтверждение удаления</h5>
+                <h5 class="modal-title">Confirm deletion</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                Вы уверены, что хотите удалить этот тег?
+                Are you sure you want to remove this tag?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
             </div>
         </div>
     </div>

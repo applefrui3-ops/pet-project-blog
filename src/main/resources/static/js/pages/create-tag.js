@@ -91,7 +91,7 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
                 bootstrap.Modal.getInstance(document.getElementById('deleteTagModal')).hide();
             })
             .catch(error => {
-                alert('Ошибка при удалении тега');
+                alert('Error deleting tag');
             });
     }
 });
@@ -109,7 +109,7 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
         const tags = formData.getAll('tags[]').filter(tag => tag.trim() !== '');
 
         if (tags.length === 0) {
-            alert('Добавьте хотя бы один тег');
+            alert('Add at least one tag');
             return;
         }
 
@@ -119,7 +119,7 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
             }
         })
             .then(response => {
-                alert('Теги успешно добавлены');
+                alert('Tags added successfully');
                 this.reset();
                 const groups = document.querySelectorAll('.tag-input-group');
                 for (let i = 1; i < groups.length; i++) {
@@ -128,6 +128,6 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
                 loadExistingTags();
             })
             .catch(error => {
-                alert('Ошибка при добавлении тегов');
+                alert('Error adding tags');
             });
     });

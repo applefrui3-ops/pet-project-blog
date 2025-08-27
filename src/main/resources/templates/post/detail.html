@@ -1,9 +1,54 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{layouts/layout :: head(Title)}">
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <header th:replace="~{layouts/layout :: header}"></header>
 
-</head>
-<body>
+        <main class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-4">
+                        <h1 class="display-5 fw-bold mb-3" th:text="${post.title}">Title</h1>
+                        <p class="text-muted">
+                            <i class="bi bi-calendar me-2"></i>
+                            <span th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy')}">Date</span>
+                        </p>
+                    </div>
 
-</body>
+                    <!-- Image -->
+<!--                    <div th:if="${post.imageUrl != null and !post.imageUrl.isEmpty()}" class="text-center mb-4">-->
+<!--                        <img th:src="${post.imageUrl}"-->
+<!--                             th:alt="${post.title}"-->
+<!--                             class="img-fluid rounded">-->
+<!--                    </div>-->
+
+
+                    <div class="mb-4">
+                        <div th:utext="${post.content}">Content</div>
+                    </div>
+
+
+                    <div th:if="${post.tags != null and !post.tags.isEmpty()}" class="mb-4">
+                        <div class="d-flex flex-wrap gap-2">
+                        <span th:each="tag : ${post.tags}"
+                              class="badge bg-secondary">
+                            <i class="bi bi-tag me-1"></i>
+                            <span th:text="${tag.name}">Tag</span>
+                        </span>
+                        </div>
+                    </div>
+
+
+                    <div class="text-center">
+                        <a href="/" class="btn btn-outline-dark">
+                            <i class="bi bi-arrow-left me-2"></i>To list
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{layouts/layout :: footer}"></footer>
+    </body>
 </html>
