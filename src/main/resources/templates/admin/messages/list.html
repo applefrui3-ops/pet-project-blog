@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/admin-layout :: head('Contact messages')}">
+    <title>Title</title>
+</head>
+
+    <body class="d-flex flex-column min-vh-100" data-page="admin">
+        <header th:replace="~{layouts/admin-layout :: header}"></header>
+
+
+        <main class="container my-4">
+
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 text-primary">Contact Messages</h1>
+                <div class="d-flex">
+                    <a th:href="@{/admin}" class="btn btn-primary mx-1">
+                        Admin panel
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-outline-primary mx-1">
+                        ← Back
+                    </a>
+                </div>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}">Message sent successfully!</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong>Error:</strong> <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    <div th:if="${totalElements == 0}" class="text-center py-5">
+                        <svg width="60" height="60" fill="currentColor" viewBox="0 0 16 16" class="text-muted mb-3">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1m0 3.5a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1H8.5V5a.5.5 0 0 0-.5-.5"/>
+                        </svg>
+                        <p class="text-muted">No messages found</p>
+                    </div>
+
+                    <div th:each="message : ${contacts}" class="border-bottom p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <a  th:href="@{/admin/messages/{id}(id=${message.id})}"
+                                    th:classappend="${message.readAt == null} ? 'link-underline-primary' : 'link-underline-dark'">
+                                    <h5 class="fw-bold mb-1" th:classappend="${message.readAt == null} ? 'text-primary' : 'text-dark'">
+                                        <span th:text="${message.subject}">Message Subject</span>
+                                        <span th:if="${message.readAt == null}" class="badge bg-primary ms-2">NEW</span>
+                                    </h5>
+                                </a>
+                                <p class="text-muted mb-2">
+                                    From: <span th:text="${message.name}">Author Name</span>
+                                    (<span th:text="${message.email}">email@example.com</span>)
+                                </p>
+                                <small class="text-muted">
+                                    Received: <span th:text="${#temporals.format(message.createdDate, 'dd.MM.yyyy HH:mm')}">Date</span>
+                                </small>
+                            </div>
+                            <div class="ms-3">
+
+                                <form th:action="@{/admin/messages/{id}(id=${message.id})}" method="post" class="d-inline">
+                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <nav th:if="${totalPages > 1}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/messages(page=0)}">First</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/messages(page=${currentPage - 1})}">‹</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(
+                    T(java.lang.Math).max(0, currentPage - 2),
+                    T(java.lang.Math).min(totalPages - 1, currentPage + 2)
+                )}" th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/admin/messages(page=${i})}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/messages(page=${currentPage + 1})}">›</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/messages(page=${totalPages - 1})}">Last</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </main>
+
+
+        <footer th:replace="~{layouts/admin-layout :: footer}"></footer>
+    </body>
+
+</html>

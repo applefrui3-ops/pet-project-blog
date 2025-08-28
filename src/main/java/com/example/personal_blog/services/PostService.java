@@ -50,4 +50,8 @@ public class PostService {
     public Page<Post> getPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
+
+    public long postsCount() {
+        return postRepository.count();
+    }
 }

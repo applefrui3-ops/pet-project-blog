@@ -1,10 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>About</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{layouts/layout :: head(About)}">
+        <meta charset="UTF-8">
+        <title>About</title>
+    </head>
+    <body class="d-flex flex-column min-vh-100">
 
-</body>
+    <header th:replace="~{layouts/layout :: header}"></header>
+
+    <main class="container my-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+
+                <div class="text-center mb-5">
+                    <h1 class="fw-bold mb-3">About This Blog</h1>
+                    <p>A personal project for sharing thoughts and code</p>
+                </div>
+
+
+                <div class="card border-0 shadow-sm mb-5">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-journal-code display-4 text-primary mb-3"></i>
+                        </div>
+
+                        <p class="text-center mb-4">
+                            This blog serves as a demonstration platform for web development concepts
+                            and personal projects. It's built with Spring Boot and showcases various
+                            technical implementations.
+                        </p>
+
+                        <p class="text-center">
+                            The content focuses on programming, technology, and personal insights
+                            from my development journey.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="card border-0 shadow-sm mb-5">
+                    <div class="card-body p-4 text-center">
+                        <h4 class="fw-semibold mb-4">Blog Statistics</h4>
+                        <div class="d-flex justify-content-around">
+                            <div>
+                                <i class="bi bi-file-text h3 text-primary mb-2"></i>
+                                <h5 class="fw-bold" th:text="${postsAmount}">0</h5>
+                                <small>Articles</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4 text-center">
+                        <h4 class="fw-semibold mb-4">Connect</h4>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="https://t.me/username" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-telegram"></i>
+                            </a>
+                            <a href="https://github.com/username" class="btn btn-outline-dark btn-sm">
+                                <i class="bi bi-github"></i>
+                            </a>
+                            <a href="https://linkedin.com/in/username" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <div class="container mt-auto mb-4">
+        <div class="text-center">
+            <a th:href="@{/}" class="btn btn-outline-dark">
+                <i class="bi bi-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+
+    <footer th:replace="~{layouts/layout :: footer}"></footer>
+
+    </body>
 </html>

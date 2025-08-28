@@ -36,6 +36,20 @@ public class Post {
 
     public Post() {}
 
+    public Post(Long id,
+                String title,
+                String content,
+                String summary,
+                LocalDateTime createdAt,
+                Set<Tag> tags) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.summary = summary;
+        this.createdAt = createdAt;
+        this.tags = tags;
+    }
+
     public void addTag(Tag tag) {
         tags.add(tag);
         tag.getPosts().add(this);

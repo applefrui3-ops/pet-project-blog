@@ -2,11 +2,12 @@ package com.example.personal_blog.controllers;
 
 import com.example.personal_blog.dto.PostDto;
 import com.example.personal_blog.dto.mappers.PostMapper;
+import com.example.personal_blog.models.Contact;
 import com.example.personal_blog.models.Post;
 import com.example.personal_blog.models.Tag;
+import com.example.personal_blog.services.ContactService;
 import com.example.personal_blog.services.PostService;
 import com.example.personal_blog.services.TagService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,18 +18,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 @Controller
 public class AdminController {
 
     private PostService postService;
     private TagService tagService;
+    private ContactService contactService;
 
-    public AdminController(PostService postService, TagService tagService) {
+    public AdminController(PostService postService, TagService tagService, ContactService contactService) {
         this.postService = postService;
         this.tagService = tagService;
+        this.contactService = contactService;
     }
 
     @GetMapping("/admin")
@@ -80,7 +80,7 @@ public class AdminController {
 
     @PostMapping("/admin/post/edit/{id}")
     public String editPost(@PathVariable Long id,
-                           @Valid @ModelAttribute("post") PostDto postDto,
+                           @Valid @ModelAttribute("postDto") PostDto postDto,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes,
                            Model model) {
@@ -129,6 +129,47 @@ public class AdminController {
     public String addTags(@Valid @ModelAttribute("tag") Tag tag) {
         tagService.saveTag(tag);
         return "admin/create-tag";
+    }
+
+    @GetMapping("/admin/messages")
+    public String showMessages(Model model,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Contact> contactPage = contactService.findAll(pageable);
+        model.addAttribute("contacts", contactPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", contactPage.getTotalPages());
+        model.addAttribute("totalElements", contactPage.getTotalElements());
+        model.addAttribute("size", size);
+        return "admin/messages/list";
+    }
+
+    @PostMapping("/admin/messages/{id}")
+    public String deleteMessages(@PathVariable Long id,
+                                 RedirectAttributes redirectAttributes) {
+        try{
+            contactService.deleteById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Message deleted successfully");
+            return "redirect:/admin/messages";
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", "Error deleting Message: " + e.getMessage());
+            return "redirect:/admin/messages";
+        }
+    }
+
+    @GetMapping("/admin/messages/{id}")
+    public String detailMessage(@PathVariable long id,
+                                Model model) {
+        try{
+            Contact contact = contactService.findById(id);
+            contactService.setAsRead(contact);
+            model.addAttribute("message", contact);
+            return "admin/messages/detail";
+        }catch (Exception e){
+            return "error/404";
+        }
     }
 
 

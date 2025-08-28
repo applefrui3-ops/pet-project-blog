@@ -26,6 +26,13 @@ public class Tag {
         this.name = name;
     }
 
+    public Tag(Long id,
+               String name,
+               Set<Post> posts) {
+        this.id = id;
+        this.name = name;
+        this.posts = posts;
+    }
 
     public void addPost(Post post) {
         posts.add(post);

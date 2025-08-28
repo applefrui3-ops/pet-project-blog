@@ -1,27 +1,33 @@
 package com.example.personal_blog.controllers;
 
+import com.example.personal_blog.dto.ContactDto;
+import com.example.personal_blog.dto.mappers.ContactMapper;
 import com.example.personal_blog.dto.mappers.PostMapper;
 import com.example.personal_blog.models.Post;
+import com.example.personal_blog.services.ContactService;
 import com.example.personal_blog.services.PostService;
 import com.example.personal_blog.services.TagService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HomeController {
 
     private PostService postService;
     private TagService tagService;
+    private ContactService contactService;
 
-    public HomeController(PostService postService, TagService tagService) {
+    public HomeController(PostService postService, TagService tagService, ContactService contactService) {
         this.postService = postService;
         this.tagService = tagService;
+        this.contactService = contactService;
     }
 
     @GetMapping("/")
@@ -47,6 +53,42 @@ public class HomeController {
     public String getPost(Model model, @PathVariable("id") Long id) {
         model.addAttribute("post", postService.getPostByIdWithTags(id));
         return "post/detail";
+    }
+
+    @GetMapping("/about")
+    public String about(Model model) {
+        model.addAttribute("postsAmount", postService.postsCount());
+        return "about";
+    }
+
+    @GetMapping("/contacts")
+    public String contacts(Model model){
+        model.addAttribute("contactDto",  new ContactDto());
+        return "contacts";
+    }
+
+    @PostMapping("/contacts")
+    public String contacts(
+            Model model,
+            @Valid @ModelAttribute ContactDto contactDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            model.addAttribute("contactDto",  contactDto);
+            model.addAttribute("errors", "\"Failed to send message. Please try again.\"");
+            return "contacts";
+        }
+        try{
+            contactService.save(new ContactMapper().toEntity(contactDto));
+            model.addAttribute("contactDto",  new ContactDto());
+            redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully!");
+            return "redirect:/contacts?success";
+        }catch (Exception e){
+            model.addAttribute("contactDto",  contactDto);
+            model.addAttribute("errors", "\"Failed to send message. Please try again.\"");
+            return "contacts";
+        }
+
     }
 
 }
