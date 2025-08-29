@@ -3,6 +3,7 @@
 <head th:replace = "~{layouts/admin-layout :: head(Create-tags)}"></head>
 <body class="d-flex flex-column min-vh-100" data-page = "create-tag">
 <header th:replace="~{layouts/admin-layout :: header}"></header>
+<nav th:replace="~{layouts/admin-layout :: breadcrumbs(${breadcrumbs})}"></nav>
 
 <div class="container py-5">
     <div class="tag-form-container">

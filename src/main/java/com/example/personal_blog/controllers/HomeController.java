@@ -7,6 +7,7 @@ import com.example.personal_blog.models.Post;
 import com.example.personal_blog.services.ContactService;
 import com.example.personal_blog.services.PostService;
 import com.example.personal_blog.services.TagService;
+import com.example.personal_blog.util.BreadcrumbUtil;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +36,8 @@ public class HomeController {
             Model model,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main /", "#"));
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage;
         postPage = postService.getPostsOrderByCreatedDescTitleAsc(pageable);
@@ -51,18 +53,24 @@ public class HomeController {
 
     @GetMapping("/post/{id}")
     public String getPost(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", String.valueOf(id), "#"));
         model.addAttribute("post", postService.getPostByIdWithTags(id));
         return "post/detail";
     }
 
     @GetMapping("/about")
     public String about(Model model) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "About", "#"));
         model.addAttribute("postsAmount", postService.postsCount());
         return "about";
     }
 
     @GetMapping("/contacts")
     public String contacts(Model model){
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Contacts", "#"));
         model.addAttribute("contactDto",  new ContactDto());
         return "contacts";
     }
@@ -73,6 +81,8 @@ public class HomeController {
             @Valid @ModelAttribute ContactDto contactDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Contacts", "#"));
         if(bindingResult.hasErrors()){
             model.addAttribute("contactDto",  contactDto);
             model.addAttribute("errors", "\"Failed to send message. Please try again.\"");

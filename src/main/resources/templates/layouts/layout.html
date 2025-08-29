@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head th:fragment="head(title)">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,9 +11,7 @@
         <script th:src="@{/js/core/main.js}" defer></script>
         <title th:text="${title}">Page</title>
     </head>
-
     <body  class="d-flex flex-column min-vh-100" th:fragment="body">
-
         <header class="bg-dark" th:fragment="header">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
@@ -30,11 +27,19 @@
                 </div>
             </nav>
         </header>
-
-        <main>
-            Main block
-        </main>
-
+        <nav aria-label="breadcrumb" class="px-3 py-2" th:fragment="breadcrumbs(breadcrumbsMap)">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" th:each="entry : ${breadcrumbsMap}"
+                    th:classappend="${entry.value == '#'} ? 'active'">
+                    <a th:if="${entry.value != '#'}"
+                       th:href="${entry.value}"
+                       th:text="${entry.key}">Page</a>
+                    <span th:unless="${entry.value != '#'}"
+                          th:text="${entry.key}"
+                          aria-current="page">Current Page</span>
+                </li>
+            </ol>
+        </nav>
         <footer class="footer mt-auto py-4 bg-dark" th:fragment="footer">
             <div class="container-fluid">
                 <div class="row align-items-center">
@@ -47,10 +52,8 @@
                         <a href="#" class="text-light me-3"><i class="bi bi-linkedin"></i></a>
                         <a href="#" class="text-light"><i class="bi bi-envelope"></i></a>
                     </div>
-
                 </div>
             </div>
         </footer>
-
     </body>
 </html>

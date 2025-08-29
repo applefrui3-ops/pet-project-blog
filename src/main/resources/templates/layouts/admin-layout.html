@@ -38,17 +38,29 @@
                         <i class="bi bi-box-arrow-right"></i> Log out
                     </button>
                 </form>
-
             </div>
-
         </div>
 
     </div>
+
 </header>
 
-<main>
-    Main block
-</main>
+<nav aria-label="breadcrumb" class="px-3 py-2" th:fragment="breadcrumbs(breadcrumbsMap)">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" th:each="entry : ${breadcrumbsMap}"
+            th:classappend="${entry.value == '#'} ? 'active'">
+
+            <a th:if="${entry.value != '#'}"
+               th:href="${entry.value}"
+               th:text="${entry.key}">Page</a>
+
+            <span th:unless="${entry.value != '#'}"
+                  th:text="${entry.key}"
+                  aria-current="page">Current Page</span>
+
+        </li>
+    </ol>
+</nav>
 
 <footer th:fragment="footer" class="bg-primary text-white py-3 mt-auto">
     <div class="container-fluid">

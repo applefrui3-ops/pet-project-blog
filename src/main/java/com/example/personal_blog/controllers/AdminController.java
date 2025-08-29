@@ -8,6 +8,7 @@ import com.example.personal_blog.models.Tag;
 import com.example.personal_blog.services.ContactService;
 import com.example.personal_blog.services.PostService;
 import com.example.personal_blog.services.TagService;
+import com.example.personal_blog.util.BreadcrumbUtil;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Controller
 public class AdminController {
@@ -35,6 +39,9 @@ public class AdminController {
     public String admin(Model model,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "15") int size) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Admin", "#"));
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage = postService.getPosts(pageable);
         model.addAttribute("posts", postPage.getContent());
@@ -47,6 +54,8 @@ public class AdminController {
 
     @GetMapping("/admin/post/new")
     public String createPost(Model model) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Admin", "/admin", "New Post", "#"));
         model.addAttribute("postDto", new PostDto());
         model.addAttribute("tags", tagService.getAllTags());
         return "admin/create-post";
@@ -73,6 +82,8 @@ public class AdminController {
                            @PathVariable Long id,
                            @ModelAttribute("postDto") @Valid PostDto postDto,
                            BindingResult bindingResult) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Admin", "/admin", "Edit Post", "#"));
         model.addAttribute("postDto", new PostMapper().toDto(postService.getPostByIdWithTags(id)));
         model.addAttribute("tags", tagService.getAllTags());
         return "admin/edit-post";
@@ -120,6 +131,8 @@ public class AdminController {
 
     @GetMapping("/admin/tag/new")
     public String addTags(Model model) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Admin", "/admin", "New Tag", "#"));
         model.addAttribute("tag", new Tag());
         model.addAttribute("tags", tagService.getAllTags());
         return "admin/create-tag";
@@ -136,6 +149,8 @@ public class AdminController {
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size
     ) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Admin", "/admin", "Messages", "#"));
         Pageable pageable = PageRequest.of(page, size);
         Page<Contact> contactPage = contactService.findAll(pageable);
         model.addAttribute("contacts", contactPage.getContent());
@@ -162,6 +177,9 @@ public class AdminController {
     @GetMapping("/admin/messages/{id}")
     public String detailMessage(@PathVariable long id,
                                 Model model) {
+        model.addAttribute("breadcrumbs",
+                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Admin", "/admin",
+                        "Messages", "/admin/messages", String.valueOf(id), "#"));
         try{
             Contact contact = contactService.findById(id);
             contactService.setAsRead(contact);

@@ -1,73 +1,77 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{layouts/admin-layout :: head(Admin)}">
-        <title>Title</title>
-    </head>
-    <body class="d-flex flex-column min-vh-100" data-page = "admin">
-        <header th:replace="~{layouts/admin-layout :: header}"></header>
-        <div class="container mt-4">
-            <h1>Admin dashboard</h1>
-
-            <div th:if="${successMessage}" id = "successMessage" class="alert alert-success alert-dismissible fade show">
-                <span th:text="${successMessage}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
-            <div class="mt-4">
-                <a href="/admin/post/new" class="btn btn-success mb-3">New post</a>
-                <a href="/admin/tag/new" class="btn btn-success mb-3">New tag</a>
-            </div>
+<head th:replace="~{layouts/admin-layout :: head(Admin)}">
+    <title>Title</title>
+</head>
+<body class="d-flex flex-column min-vh-100" data-page="admin">
+<header th:replace="~{layouts/admin-layout :: header}"></header>
+<nav th:replace="~{layouts/admin-layout :: breadcrumbs(${breadcrumbs})}"></nav>
 
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>№</th>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="post, status : ${posts}">
-                    <td th:text="${status.index + 1}">№</td>
-                    <td th:text="${post.id}">ID</td>
-                    <td><a href="/admin" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></td>
-                    <td th:text="${post.createdAt.toLocalDate()}">Date</td>
-                    <td>
-                        <a href="/admin" th:href="@{/admin/post/edit/{id}(id=${post.id})}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="/admin" th:href="@{/admin/post/delete/{id}(id=${post.id})}" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<div class="container mt-4">
+    <h1>Admin dashboard</h1>
 
-            <nav th:if="${totalPages > 1}">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{/admin(page = 0, size = ${size})}">First</a>
-                    </li>
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{/admin(page = ${currentPage - 1}, size = ${size})}"> < </a>
-                    </li>
-                    <li class="page-item" th:each="i : ${#numbers.sequence(
+    <div th:if="${successMessage}" id="successMessage" class="alert alert-success alert-dismissible fade show">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="mt-4">
+        <a href="/admin/post/new" class="btn btn-success mb-3">New post</a>
+        <a href="/admin/tag/new" class="btn btn-success mb-3">New tag</a>
+    </div>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post, status : ${posts}">
+            <td th:text="${status.index + 1}">№</td>
+            <td th:text="${post.id}">ID</td>
+            <td><a href="/admin" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Title</a></td>
+            <td th:text="${post.createdAt.toLocalDate()}">Date</td>
+            <td>
+                <a href="/admin" th:href="@{/admin/post/edit/{id}(id=${post.id})}"
+                   class="btn btn-sm btn-warning">Edit</a>
+                <a href="/admin" th:href="@{/admin/post/delete/{id}(id=${post.id})}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = 0, size = ${size})}">First</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = ${currentPage - 1}, size = ${size})}"> < </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(
                     T(java.lang.Math).max(0, currentPage - 2),
                     T(java.lang.Math).min(totalPages - 1, currentPage + 2)
                     )}" th:classappend="${currentPage == i} ? 'active'">
-                        <a class="page-link" th:href="@{/admin(page = ${i}, size = ${size})}" th:text="${i + 1}">Page</a>
-                    </li>
-                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                        <a class="page-link" th:href="@{/admin(page = ${currentPage + 1}, size = ${size})}"> > </a>
-                    </li>
-                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                        <a class="page-link" th:href="@{/admin(page = ${currentPage + 1}, size = ${size})}">Last</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                <a class="page-link" th:href="@{/admin(page = ${i}, size = ${size})}" th:text="${i + 1}">Page</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = ${currentPage + 1}, size = ${size})}"> > </a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin(page = ${currentPage + 1}, size = ${size})}">Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
-        <footer th:replace = "~{layouts/admin-layout :: footer}"></footer>
+<footer th:replace="~{layouts/admin-layout :: footer}"></footer>
 
-    </body>
+</body>
 </html>

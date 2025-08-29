@@ -3,6 +3,7 @@
 <head th:replace="~{layouts/admin-layout :: head(Update-post)}"></head>
 <body class="d-flex flex-column min-vh-100" data-page = "create-post">
 <header th:replace="~{layouts/admin-layout :: header}"></header>
+<nav th:replace="~{layouts/admin-layout :: breadcrumbs(${breadcrumbs})}"></nav>
 
 <main class="my-3">
     <div class="container mt-4">
