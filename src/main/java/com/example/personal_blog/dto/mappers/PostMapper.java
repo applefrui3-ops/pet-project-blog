@@ -18,6 +18,8 @@ public class PostMapper{
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setSummary(post.getSummary());
+        dto.setImageSrc(post.getImageSrc());
+        dto.setImageAlt(post.getImageAlt());
         dto.setTags(post.getTags());
         return  dto;
     }
@@ -28,6 +30,8 @@ public class PostMapper{
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setSummary(dto.getSummary());
+        post.setImageSrc(dto.getImageSrc());
+        post.setImageAlt(dto.getImageAlt());
         post.setTags(dto.getTags());
         return post;
     }
@@ -38,6 +42,8 @@ public class PostMapper{
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setSummary(dto.getSummary());
+        post.setImageSrc(dto.getImageSrc());
+        post.setImageAlt(dto.getImageAlt());
         post.setCreatedAt(createdAt);
         post.setTags(dto.getTags());
         return post;

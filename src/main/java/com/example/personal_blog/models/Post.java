@@ -21,6 +21,8 @@ public class Post {
     private String content;
     @Column
     private String summary;
+    private String imageSrc;
+    private String imageAlt;
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -92,6 +94,22 @@ public class Post {
         this.summary = summary;
     }
 
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
+
+    public String getImageAlt() {
+        return imageAlt;
+    }
+
+    public void setImageAlt(String imageAlt) {
+        this.imageAlt = imageAlt;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -112,16 +130,12 @@ public class Post {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(id, post.id) &&
-                Objects.equals(title, post.title) &&
-                Objects.equals(content, post.content) &&
-                Objects.equals(summary, post.summary) &&
-                Objects.equals(createdAt, post.createdAt);
+        return Objects.equals(id, post.id) && Objects.equals(title, post.title) && Objects.equals(content, post.content) && Objects.equals(summary, post.summary) && Objects.equals(imageSrc, post.imageSrc) && Objects.equals(imageAlt, post.imageAlt) && Objects.equals(createdAt, post.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, content, summary, createdAt);
+        return Objects.hash(id, title, content, summary, imageSrc, imageAlt, createdAt);
     }
 
     @Override
@@ -131,6 +145,8 @@ public class Post {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", summary='" + summary + '\'' +
+                ", imageSrc='" + imageSrc + '\'' +
+                ", imageAlt='" + imageAlt + '\'' +
                 ", createdAt=" + createdAt +
                 ", tags=" + tags +
                 '}';

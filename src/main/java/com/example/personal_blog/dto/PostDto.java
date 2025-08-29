@@ -18,6 +18,8 @@ public class PostDto {
     private String content;
     @Size(max = 255, message = "Summary must be less than 255 characters")
     private String summary;
+    private String imageSrc;
+    private String imageAlt;
     private Set<Tag> tags;
 
     public Long getId() {
@@ -52,6 +54,21 @@ public class PostDto {
         this.summary = summary;
     }
 
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
+
+    public String getImageAlt() {
+        return imageAlt;
+    }
+
+    public void setImageAlt(String imageAlt) {
+        this.imageAlt = imageAlt;
+    }
 
     public Set<Tag> getTags() {
         return tags;

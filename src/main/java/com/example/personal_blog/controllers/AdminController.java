@@ -95,6 +95,8 @@ public class AdminController {
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes,
                            Model model) {
+        System.out.println("\n----------------------------------\n");
+        System.out.println(postDto);
         if (bindingResult.hasErrors()) {
             model.addAttribute("postDto", postDto);
             model.addAttribute("tags", tagService.getAllTags());
