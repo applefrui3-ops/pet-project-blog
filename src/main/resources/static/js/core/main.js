@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function (e){
 
     const page = document.body.dataset.page;
 
+    handleLocaleLinks();
+
     switch (page) {
         case 'admin':
             import('../pages/admin.js');

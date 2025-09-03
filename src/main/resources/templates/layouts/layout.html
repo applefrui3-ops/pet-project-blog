@@ -5,9 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
         <link th:href="@{/css/custom.css}" rel="stylesheet">
-        <script th:src="@{/js/bootstrap.min.js}" defer></script>
-        <script th:src="@{/js/core/common.js}" defer></script>
-        <script th:src="@{/js/core/main.js}" defer></script>
         <title th:text="${title}">Page</title>
     </head>
     <body  class="d-flex flex-column min-vh-100" th:fragment="body">
@@ -19,9 +16,33 @@
                             <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
                         </svg>
                     </a>
-                    <div class="navbar-nav">
-                        <a class="nav-link text-white" href="/about">About</a>
-                        <a class="nav-link text-white" href="/contacts">Contacts</a>
+
+                    <div class="d-flex">
+
+                        <div class="navbar-nav">
+                            <a class="nav-link text-white" th:href="@{/about}" th:text="#{header.menu.about}">About</a>
+                            <a class="nav-link text-white" th:href="@{/contacts}" th:text="#{header.menu.contacts}">Contacts</a>
+                        </div>
+                        <div id = "lang-menu" class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button"
+                                    id="languageDropdown" data-bs-toggle="dropdown"
+                                    aria-expanded="false" th:text="${#locale.getLanguage().toUpperCase()}">
+                                EN
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                <li>
+                                    <a class="dropdown-item" data-lang="en" href>
+                                        EN <span th:text="English">English</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" data-lang="ru" href>
+                                        RU <span th:text="Russian">Russian</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </nav>
@@ -32,18 +53,21 @@
                     th:classappend="${entry.value == '#'} ? 'active'">
                     <a th:if="${entry.value != '#'}"
                        th:href="${entry.value}"
-                       th:text="${entry.key}">Page</a>
+                       th:text="#{${entry.key}}">Page</a>
                     <span th:unless="${entry.value != '#'}"
-                          th:text="${entry.key}"
+                          th:text="#{${entry.key}}"
                           aria-current="page">Current Page</span>
                 </li>
             </ol>
         </nav>
+
         <footer class="footer mt-auto py-4 bg-dark" th:fragment="footer">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <span class="text-light">© <span th:text="${#temporals.year(#temporals.createNow())}">2025</span> Personal Blog. All rights reserved.</span>
+                        <span class="text-light">© <span th:text="${#temporals.year(#temporals.createNow())}">2025</span>
+                            <th:block th:text="#{footer.copyright}">Personal Blog. All rights reserved.</th:block>
+                        </span>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <a href="#" class="text-light me-3"><i class="bi bi-telegram"></i></a>
@@ -54,5 +78,11 @@
                 </div>
             </div>
         </footer>
+    <div th:fragment = "scripts">
+        <script th:src="@{/js/popper.min.js}" defer></script>
+        <script th:src="@{/js/bootstrap.min.js}" defer></script>
+        <script th:src="@{/js/core/main.js}" defer></script>
+        <script th:src="@{/js/core/common.js}" defer></script>
+    </div>
     </body>
 </html>

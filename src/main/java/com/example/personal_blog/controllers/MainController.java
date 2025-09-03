@@ -2,7 +2,6 @@ package com.example.personal_blog.controllers;
 
 import com.example.personal_blog.dto.ContactDto;
 import com.example.personal_blog.dto.mappers.ContactMapper;
-import com.example.personal_blog.dto.mappers.PostMapper;
 import com.example.personal_blog.models.Post;
 import com.example.personal_blog.services.ContactService;
 import com.example.personal_blog.services.PostService;
@@ -19,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class HomeController {
+public class MainController {
 
     private PostService postService;
     private TagService tagService;
     private ContactService contactService;
 
-    public HomeController(PostService postService, TagService tagService, ContactService contactService) {
+    public MainController(PostService postService, TagService tagService, ContactService contactService) {
         this.postService = postService;
         this.tagService = tagService;
         this.contactService = contactService;
@@ -37,7 +36,7 @@ public class HomeController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         model.addAttribute("breadcrumbs",
-                BreadcrumbUtil.createBreadcrumbs("Main /", "#"));
+                BreadcrumbUtil.createBreadcrumbs("breadcrumb.home", "#"));
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage;
         postPage = postService.getPostsOrderByCreatedDescTitleAsc(pageable);
@@ -54,7 +53,7 @@ public class HomeController {
     @GetMapping("/post/{id}")
     public String getPost(Model model, @PathVariable("id") Long id) {
         model.addAttribute("breadcrumbs",
-                BreadcrumbUtil.createBreadcrumbs("Main", "/", String.valueOf(id), "#"));
+                BreadcrumbUtil.createBreadcrumbs("breadcrumb.main", "/", "breadcrumb.post", "#"));
         model.addAttribute("post", postService.getPostByIdWithTags(id));
         return "post/detail";
     }
@@ -62,7 +61,7 @@ public class HomeController {
     @GetMapping("/about")
     public String about(Model model) {
         model.addAttribute("breadcrumbs",
-                BreadcrumbUtil.createBreadcrumbs("Main", "/", "About", "#"));
+                BreadcrumbUtil.createBreadcrumbs("breadcrumb.main", "/", "breadcrumb.about", "#"));
         model.addAttribute("postsAmount", postService.postsCount());
         return "about";
     }
@@ -70,7 +69,7 @@ public class HomeController {
     @GetMapping("/contacts")
     public String contacts(Model model){
         model.addAttribute("breadcrumbs",
-                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Contacts", "#"));
+                BreadcrumbUtil.createBreadcrumbs("breadcrumb.main", "/", "breadcrumb.contacts", "#"));
         model.addAttribute("contactDto",  new ContactDto());
         return "contacts";
     }
@@ -82,7 +81,7 @@ public class HomeController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
         model.addAttribute("breadcrumbs",
-                BreadcrumbUtil.createBreadcrumbs("Main", "/", "Contacts", "#"));
+                BreadcrumbUtil.createBreadcrumbs("breadcrumb.main", "/", "breadcrumb.contacts", "#"));
         if(bindingResult.hasErrors()){
             model.addAttribute("contactDto",  contactDto);
             model.addAttribute("errors", "\"Failed to send message. Please try again.\"");
@@ -91,7 +90,7 @@ public class HomeController {
         try{
             contactService.save(new ContactMapper().toEntity(contactDto));
             model.addAttribute("contactDto",  new ContactDto());
-            redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "contacts.connect.form.success1");
             return "redirect:/contacts?success";
         }catch (Exception e){
             model.addAttribute("contactDto",  contactDto);
@@ -100,5 +99,4 @@ public class HomeController {
         }
 
     }
-
 }
