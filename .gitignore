@@ -33,6 +33,8 @@ build/
 .vscode/
 
 
+
 ### Dev ###
 .mvn
-
+.env
+*.env

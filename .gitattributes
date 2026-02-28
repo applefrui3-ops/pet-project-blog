@@ -1,2 +1,26 @@
+* text=auto
+
+# Java
+*.java text diff=java
+*.properties text
+*.xml text diff=xml
+
 /mvnw text eol=lf
 *.cmd text eol=crlf
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# Markdown
+*.md text
+*.txt text
+
+# DB
+*.sql text
+
+# Bin
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.jar binary
