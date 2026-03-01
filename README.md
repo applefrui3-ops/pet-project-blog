@@ -3,8 +3,7 @@
         <b>Readme: example-spring-rest</b>
     </h1>
     <p>
-        A personal blog application built with Spring Boot. 
-        This is my pet project to practice and demonstrate Spring ecosystem knowledge.
+        A personal blog application built with Spring Boot.
     </p>
 </div>
 
