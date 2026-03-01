@@ -19,16 +19,37 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
-                auth -> auth.requestMatchers(
-                        "/**"
-                ).permitAll()
-        );
-                return http.build();
+        http
+                .authorizeHttpRequests(
+                auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/post/**",
+                                "/about",
+                                "/contacts"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/admin/**"
+                        ).hasRole("ADMIN")
+                        .anyRequest().authenticated()
+        )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/admin")
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
+        return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password("{noop}admin")
